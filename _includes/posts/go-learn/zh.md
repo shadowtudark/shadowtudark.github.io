@@ -40,3 +40,40 @@ func offset(tz string) int {
 	return 0
 }
 ```
+
+### 方法
+* 两种具体方法，值和指针
+* 值，改方法需要返回更新后的切片，比较麻烦，其实是指值为接收者
+
+```
+type ByteSlice []byte
+
+func (slice ByteSlice) Append(data []byte) []byte {
+	// append data to slice
+}
+```
+
+* 指针
+
+```
+func (p *ByteSlice) Write(data []byte) {
+	slice := *p
+	// append data to slice
+	*p = slice
+}
+```
+
+```
+更优雅的方式
+
+func (p *ByteSlice) Write(data []byte) (n int, err error) {
+	slice := *p
+	// append data to slice
+	*p = slice
+	return len(data), nil
+}
+```
+
+
+* 值方法可以通过指针和值调用，指针方法只能通过指针来调用
+
